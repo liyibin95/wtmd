@@ -84,8 +84,10 @@ jobs:
 
       - name: Install dependencies
         run: npm install -g javascript-obfuscator terser
+        
       - name: Obfuscate JavaScript code
         run: |
+          log "*.js"
           for file in *.js; do
             log "$file"
             javascript-obfuscator $file --output $(basename $file) --compact true --control-flow-flattening true
