@@ -106,5 +106,5 @@ jobs:
         if: success() # 仅在更新成功时提交
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "版本: ${{ steps.check_update.outputs.tag_name || '未知' }}"
+          commit_message: "时间: $(date +'%Y-%m-%d %H:%M:%S')"
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
