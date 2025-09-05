@@ -82,20 +82,26 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install -g javascript-obfuscator terser
+      - name: Install JavaScript Obfuscator
+        run: npm install -g javascript-obfuscator
         
-      - name: Obfuscate JavaScript code
+      - name: Obfuscate JS files
         run: |
-          log "*.js"
-          for file in *.js; do
-            log "$file"
-            javascript-obfuscator $file --output $(basename $file) --compact true --control-flow-flattening true
-          done
-      - name: Minify JavaScript code
-        run: |
-          for file in *.js; do
-            terser $file -o $file --compress --mangle
+          # 创建输出目录
+          mkdir -p dist
+          
+          # 查找根目录下所有.js文件（不包括node_modules和dist目录）
+          find . -maxdepth 1 -type f -name "*.js" | while read -r file; do
+            # 提取文件名
+            filename=$(basename "$file")
+            log "$filename"
+            # 混淆代码并输出到dist目录
+            javascript-obfuscator "$file" --output "$filename" \
+              --compact true \
+              --control-flow-flattening true \
+              --dead-code-injection true \
+              --string-array true \
+              --string-array-encoding 'base64'
           done
         
       - name: 提交更改
