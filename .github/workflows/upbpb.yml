@@ -90,11 +90,11 @@ jobs:
           # 创建输出目录
           mkdir -p dist
           
-          # 查找根目录下所有.js文件（不包括node_modules和dist目录）
+          # 查找根目录下所有.js文件
           find . -maxdepth 1 -type f -name "*.js" | while read -r file; do
             # 提取文件名
             filename=$(basename "$file")
-            # 混淆代码并输出到dist目录
+            # 混淆代码并输出
             javascript-obfuscator "$file" --output "$filename" \
               --compact true \
               --control-flow-flattening true \
