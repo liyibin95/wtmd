@@ -72,6 +72,7 @@ jobs:
           log "解压 $TARGET_FILE..."
           unzip -o "$TARGET_FILE"
           rm "$TARGET_FILE"
+          echo "$TARGET_FILE"
           echo "$TAG_NAME" > version.txt
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           log "更新完成，新版本: $TAG_NAME"
