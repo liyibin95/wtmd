@@ -72,11 +72,30 @@ jobs:
           log "解压 $TARGET_FILE..."
           unzip -o "$TARGET_FILE"
           rm "$TARGET_FILE"
-          echo "$TARGET_FILE"
+          
           echo "$TAG_NAME" > version.txt
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           log "更新完成，新版本: $TAG_NAME"
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
+      - name: Install dependencies
+        run: npm install -g javascript-obfuscator terser
+      - name: Obfuscate JavaScript code
+        run: |
+          for file in *.js; do
+            log "$file"
+            javascript-obfuscator $file --output $(basename $file) --compact true --control-flow-flattening true
+          done
+      - name: Minify JavaScript code
+        run: |
+          for file in *.js; do
+            terser $file -o $file --compress --mangle
+          done
+        
       - name: 提交更改
         if: success() # 仅在更新成功时提交
         uses: stefanzweifel/git-auto-commit-action@v5
