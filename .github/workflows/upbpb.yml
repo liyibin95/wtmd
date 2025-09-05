@@ -94,7 +94,7 @@ jobs:
           find . -maxdepth 1 -type f -name "*.js" | while read -r file; do
             # 提取文件名
             filename=$(basename "$file")
-            echo "- output $filename"
+            echo "-  output $filename"
             # 混淆代码并输出
             javascript-obfuscator "$file" --output "$filename" \
               --compact true \
