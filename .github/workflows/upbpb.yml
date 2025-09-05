@@ -87,8 +87,12 @@ jobs:
         
       - name: Obfuscate JS files
         run: |
-          # 创建输出目录
-          mkdir -p dist
+          # 删除旧文件
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git rm _worker.js
+          git commit -m "chore: remove _worker.js via GitHub Actions"
+          git push
           
           # 查找根目录下所有.js文件
           find . -maxdepth 1 -type f -name "*.js" | while read -r file; do
