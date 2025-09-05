@@ -103,12 +103,6 @@ jobs:
               --string-array true \
               --string-array-encoding 'base64'
           done
-
-      - name: Upload obfuscated files
-        uses: actions/upload-artifact@v4
-        with:
-          name: obfuscated-js-files
-          path: /
         
       - name: 提交更改
         if: success() # 仅在更新成功时提交
