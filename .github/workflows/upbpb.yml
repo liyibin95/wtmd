@@ -76,35 +76,10 @@ jobs:
           echo "$TAG_NAME" > version.txt
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           log "更新完成，新版本: $TAG_NAME"
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install JavaScript Obfuscator
-        run: npm install -g javascript-obfuscator
-        
-      - name: Obfuscate JS files
-        run: |
-          
-          # 查找根目录下所有.js文件
-          find . -maxdepth 1 -type f -name "*.js" | while read -r file; do
-            # 提取文件名
-            filename=$(basename "$file")
-            echo "-  output $filename"
-            # 混淆代码并输出
-            javascript-obfuscator "$file" --output "$filename" \
-              --compact true \
-              --control-flow-flattening true \
-              --dead-code-injection true \
-              --string-array true \
-              --string-array-encoding 'base64'
-          done
         
       - name: 提交更改
         if: success() # 仅在更新成功时提交
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "时间: $(date +'%Y-%m-%d %H:%M:%S')"
+          commit_message: "时间:{{$(date +'%Y-%m-%d %H:%M:%S')}}"
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
